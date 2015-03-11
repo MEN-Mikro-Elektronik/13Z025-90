@@ -1,0 +1,82 @@
+===== [ History of fileset ART/13Z025-90/13Z025-90 ] =====
+
+
+-----[ Release-1.9 ]-----
+[ 2014-11-14 16:22:58 by ts ]
+frodo_serial.c
+ R: Bug: multiple 16Z025 UARTs in F206 were registered under same device with kernels > 3.7.x
+ M: corrected mapbase member of UART port struct to contain physical UART address
+
+-----[ Release-1.8 ]-----
+[ 2014-07-29 15:11:26 by ts ]
+frodo_serial.c
+ R: compile with kernel 3.14.6 and gcc 4.8 showed numerous warnings
+ M: corrected voidpointer casts to values and types of register pointers
+
+-----[ Release-1.7 ]-----
+[ 2013-07-31 16:52:03 by ts ]
+frodo_serial.c
+ R: 1. on system with 2xF216 the 2nd F216(8xUART) worked in wrong mode
+ M: 1a. increased array size for max.
+    1b. set all found UART phy defaults to single ended (RS232, mode=0x01)
+frodo_serial_doc.c
+ R: default setting of phy modes wasnt clearly stated
+ M: added comment about default mode = RS232 if mode parameter is omitted
+
+-----[ Release-1.6 ]-----
+[ 2013-05-16 21:57:34 by ts ]
+frodo_serial.c
+ R: 1. compile failed with kernel 3.7.10
+    2. potentially unsafe module parameter parse function
+    3. many references to old driver name occur still in dmesg dumps
+ M: 1. updated driver to use struct uart_8250_port
+    2. fixed frodo_setup to use safe functions like strncpy etc.
+    3. replaced dump texts with neutral IP core names where possible
+frodo_serial_doc.c
+ R: newer 2.6 kernels allow specifying more than 4 UARTs as boot parameter
+ M: updated documentation to show usage of nr_uarts= parameter
+
+-----[ Release-1.5 ]-----
+[ 2007-12-07 17:30:39 by ts ]
+
+13z02590.xml
+- SW Module men_lx_chameleon added to be selected automatically
+frodo_serial_doc.c
+- added comment about special EM01 UART clock setting
+- removed unnecessary comment about PCI Clocks
+Tested under Ubuntu 7.03, Suse 10.2/10.3 and ElinOS 4.1
+
+-----[ Release-1.4 ]-----
+[ 2007-06-11 15:35:51 by ts ]
+*** CHANGED FILES ***
+frodo_serial.c
+- call pci_enable_device() so PCI Irq works at new kernels
+- correct baud_base to 115200 automatically for Z57 units
+- integrated Z057 Unit
+chameleon.h
+- added defines for PCI Vendor IDs for Altera and MEN
+- Added 16Z057 (modified Z025, different IRQ handling)
+
+-----[ Release-1.3 ]-----
+[ 2007-03-01 10:52:12 by ts ]
+*** CHANGED FILES ***
+File frodo_serial.c
+   Added support for Z125 ChamV2 single UART unit
+
+-----[ Release-1.2 ]-----
+[ 2006-10-30 18:42:45 by ts ]
+ä
+*** CHANGED FILES ***
+File frodo_serial.c
+   API Change: [un]register_serial replaced by serial8250_[un]register_port
+   from kernel 2.6.12 on
+File /_CVS_/LINUX/INCLUDE/NATIVE/MEN/men_chameleon.h RCS 1.4 -> RCS 1.5
+   Corrected wrong MOD_CODE_END for V0 tables to 0x3f
+
+-----[ Release-1.1 ]-----
+[ 2005-11-14 16:52:27 by ub ]
+chameleon.h extended for new IP cores
+
+-----[ Release-1.0 ]-----
+[ 2005-02-16 14:59:36 by ub ]
+Initial Revision
