@@ -158,10 +158,10 @@ static int G_frodo_mode[FRODO_MAX_SETUP];
 static int uarts_probe( CHAMELEON_UNIT_T *chu );
 static int uarts_remove( CHAMELEON_UNIT_T *chu );
 
-static u16 G_modCodeArr[] = { CHAMELEON_FRODO,  /* Standard Quad UART Z025 */
-							  CHAMELEON_16Z125_UART, /* ChamV2 Single UART */
-							  CHAMELEON_16Z057_UART, /*  Z025 w/ special clk */
-							  CHAMELEON_MODCODE_END };
+static u16 G_modCodeArr[] = { 	CHAMELEON_16Z025_UART,  /* Standard Quad UART Z025 */
+		  		CHAMELEON_16Z125_UART, /* ChamV2 Single UART */
+		  		CHAMELEON_16Z057_UART, /*  Z025 w/ special clk */
+		 		CHAMELEON_MODCODE_END };
 
 static CHAMELEON_DRIVER_T G_driver = {
     .name		=	"men_z25-serial",
