@@ -112,7 +112,7 @@
 #define Z25_MODE_HDXE	0x0d	/* differential, half duplex, with echo */
 #define Z25_MODE_HDX	0x0f	/* differential, half duplex, echo suppressed */
 
-#define FRODO_MAX_SETUP 	64
+#define MEN_Z25_MAX_SETUP 	64
 #define Z25_DRV_NAM			"MEN 13Z025"
 #define MODE_MAX_LEN		255 /* chars of mode */
 #ifdef DBG
@@ -125,8 +125,8 @@
 # define CONFIG_MEN_Z025_UART_BASECLK 33333333
 #endif
 
-#define FRODO_READB( addr )         (ioMapped ?	inb((unsigned long)addr) : readb((void*)addr))
-#define FRODO_WRITEB( val, addr )   (ioMapped ? outb(val,(unsigned long)addr) : writeb(val,(void*)addr))
+#define MEN_Z25_READB( addr )         (ioMapped ?	inb((unsigned long)addr) : readb((void*)addr))
+#define MEN_Z25_WRITEB( val, addr )   (ioMapped ? outb(val,(unsigned long)addr) : writeb(val,(void*)addr))
 
 
 /*
@@ -149,8 +149,8 @@
 # define UART_8250_IOMEMBASE  		men_uart_port.port.membase
 #endif
 
-static int G_frodoNr;			/**< current number of FRODO uarts found */
-static int G_frodo_mode[FRODO_MAX_SETUP];
+static int G_frodoNr;			/**< current number of MEN_Z25 uarts found */
+static int G_frodo_mode[MEN_Z25_MAX_SETUP];
 
 /*
  * Probe for all Frodo controllers. Each may have up to 4 UARTs
@@ -176,7 +176,7 @@ typedef struct {
     unsigned char *uartBase[4];			/* mapped base addresses of UARTs */
     unsigned char* modeReg;              /* mapped base addresses of mode register */
     int  line[4];				/* serial.c lines assigned (for unregister) */
-} FRODO_DRVDATA_T;
+} MEN_Z25_DRVDATA_T;
 
 
 /*******************************************************************/
@@ -219,7 +219,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 	struct UART_8250_PORT_STRUCT   men_uart_port;
     unsigned char exist_mask, b;
     int line, i, ioMapped;
-    FRODO_DRVDATA_T *drvData;
+    MEN_Z25_DRVDATA_T *drvData;
 
 #ifdef CONFIG_MENEM04
     {
@@ -239,7 +239,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 		   uart_physbase, chu->irq, baud_base );
 
     /*--- get storage for intermediate data ---*/
-    drvData = kmalloc( sizeof(FRODO_DRVDATA_T), GFP_KERNEL );
+    drvData = kmalloc( sizeof(MEN_Z25_DRVDATA_T), GFP_KERNEL );
     chu->driver_data = drvData;
 
     if( !drvData ){
@@ -259,7 +259,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 	}
 
     /*--- check existence of up to 4 UARTs inside 16Z025 ---*/
-    exist_mask = FRODO_READB(drvData->modeReg) & 0xf0;
+    exist_mask = MEN_Z25_READB(drvData->modeReg) & 0xf0;
     DBGOUT( "Z25 exist_mask=0x%x\n", exist_mask );
 
     for( i=0, b=0x10; i<4; ++i, b<<=1 ) 
@@ -324,14 +324,14 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 			 * according to kernel parameter. Default: 
 			 * RS232 (single ended)
 			 */
-			if(( G_frodoNr >= FRODO_MAX_SETUP) || (!G_frodo_mode[G_frodoNr]))
+			if(( G_frodoNr >= MEN_Z25_MAX_SETUP) || (!G_frodo_mode[G_frodoNr]))
 				modeval = Z25_MODE_SE;
 			else
 				modeval = G_frodo_mode[G_frodoNr];
 
 			DBGOUT(KERN_INFO "16Z025 channel %d: mode=0x%02x\n", G_frodoNr, modeval );
 
-            FRODO_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
+            MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
 			if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 				printk( KERN_ERR "*** UART registering for 16Z025 UART %d failed\n", G_frodoNr);
 			} else
@@ -364,7 +364,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
 	struct UART_8250_PORT_STRUCT   men_uart_port;
 
-    FRODO_DRVDATA_T *drvData;
+    MEN_Z25_DRVDATA_T *drvData;
 
     uart_physbase = chu->phys;
 
@@ -444,13 +444,13 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
      * according to kernel parameter. Default: 
 	 * RS232 (single ended)
      */
-    if(( G_frodoNr >= FRODO_MAX_SETUP) || (!G_frodo_mode[G_frodoNr]))
+    if(( G_frodoNr >= MEN_Z25_MAX_SETUP) || (!G_frodo_mode[G_frodoNr]))
 		modeval = Z25_MODE_SE;
     else
 		modeval = G_frodo_mode[G_frodoNr];
 
 	DBGOUT(KERN_INFO "16Z125 instance %d: mode=0x%02x\n", chu->instance, modeval );
-    FRODO_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
+    MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
 	if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 		printk( KERN_ERR "*** register_serial() for Frodo UART %d failed\n", G_frodoNr);
     } else {
@@ -490,7 +490,7 @@ static int uarts_probe( CHAMELEON_UNIT_T *chu )
 	}
 
     switch (chu->modCode){
-    case CHAMELEON_FRODO:
+    case CHAMELEON_16Z025_UART:
 		DBGOUT(KERN_INFO "Probing Z25 unit\n");
 		retval 		= 	z25_probe(chu);
 		break;
@@ -526,7 +526,7 @@ static int uarts_probe( CHAMELEON_UNIT_T *chu )
  */
 static int z25_remove( CHAMELEON_UNIT_T *chu )
 {
-    FRODO_DRVDATA_T *drvData = chu->driver_data;
+    MEN_Z25_DRVDATA_T *drvData = chu->driver_data;
     int i;
 
     DBGOUT("z25_remove: physBase=%p irq=%d\n", chu->phys, chu->irq );
@@ -560,7 +560,7 @@ static int z25_remove( CHAMELEON_UNIT_T *chu )
  */
 static int z125_remove( CHAMELEON_UNIT_T *chu )
 {
-    FRODO_DRVDATA_T *drvData = chu->driver_data;
+    MEN_Z25_DRVDATA_T *drvData = chu->driver_data;
 
     DBGOUT("z125_remove: physBase=%p irq=%d\n", chu->phys, chu->irq );
 
@@ -588,7 +588,7 @@ static int z125_remove( CHAMELEON_UNIT_T *chu )
  */
 static int uarts_remove( CHAMELEON_UNIT_T *chu )
 {
-    if (chu->modCode == CHAMELEON_FRODO){
+    if (chu->modCode == CHAMELEON_16Z025_UART){
 		return z25_remove(chu);
     }
     else if (chu->modCode == CHAMELEON_16Z125_UART) {
@@ -627,7 +627,7 @@ static int __init frodo_setup( char *str )
 		if( ((t = strchr( s, ',' )) != NULL) ||  ((t = strchr( s, ' ' )) != NULL))
 			*t = '\0';			/* replace ',' by \0, chopping the modeline */
 
-		if( i < FRODO_MAX_SETUP ){
+		if( i < MEN_Z25_MAX_SETUP ){
 			if( !strcmp( s, "se" ))
 				G_frodo_mode[i] = Z25_MODE_SE;
 			else if( !strncmp( s, "df_fdx",  6 ))
