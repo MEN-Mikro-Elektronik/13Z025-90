@@ -279,12 +279,12 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 
             if( ioMapped ) {
 				men_uart_port.iotype	= UPIO_PORT;
-				men_uart_port.iobase	= (unsigned)uart_physbase+i*0x10;
+				men_uart_port.iobase	= (unsigned long)(uart_physbase+i*0x10);
 				DBGOUT(KERN_INFO "men_uart_port.iobase=0x%08x\n", men_uart_port.iobase );
             } else {
 				men_uart_port.iotype 	= UPIO_MEM;
-                drvData->uartBase[i]= (void*)ioremap_nocache((ulong)uart_physbase+i*0x10,0x10);
-				men_uart_port.mapbase 	= (unsigned)uart_physbase + i*0x10;
+				drvData->uartBase[i]    = (void*)ioremap_nocache((ulong)uart_physbase+i*0x10,0x10);
+				men_uart_port.mapbase 	= (resource_size_t)(uart_physbase + i*0x10);
 				men_uart_port.membase 	= (char*)drvData->uartBase[i];
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x\n", men_uart_port.membase );
             }
@@ -362,7 +362,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
     int modeval=0, ioMapped=0;
     int line = 0;
 
-	struct UART_8250_PORT_STRUCT   men_uart_port;
+    struct UART_8250_PORT_STRUCT   men_uart_port;
 
     MEN_Z25_DRVDATA_T *drvData;
 
@@ -397,11 +397,11 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
     /* set address */
     if( ioMapped ) {
 		men_uart_port.iotype	= UPIO_PORT;
-		men_uart_port.iobase	= (unsigned int)uart_physbase;
+		men_uart_port.iobase	= (unsigned long)uart_physbase;
     } else {
 		men_uart_port.iotype 	= UPIO_MEM;
 		drvData->uartBase[0] 	= (void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
-		men_uart_port.mapbase 	= (unsigned)uart_physbase;
+		men_uart_port.mapbase 	= (resource_size_t)uart_physbase;
 		men_uart_port.membase 	= (char*)drvData->uartBase[0];
     }
 #elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
