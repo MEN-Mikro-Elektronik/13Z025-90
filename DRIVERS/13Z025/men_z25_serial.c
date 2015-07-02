@@ -660,7 +660,7 @@ static int __init frodo_setup( char *str )
  */
 static int __init uarts_serial_init(void)
 {
-    printk(KERN_INFO Z25_DRV_NAM " built %s %s:\n", __DATE__, __TIME__ );
+    printk(KERN_INFO Z25_DRV_NAM "\n" );
 
 #ifdef MODULE
     frodo_setup( mode );		/* pass module parameter */
