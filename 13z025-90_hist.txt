@@ -1,5 +1,17 @@
 ===== [ History of fileset ART/13Z025-90/13Z025-90 ] =====
 
+commit cc499a68210d4740fb50cc7ab6a80c5146e5ad00 (tag: 13Z025-90_01_10)
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Fri May 15 12:31:52 2015 +0200
+
+R: 1. compilerwarning about different size in cast. 
+   2. compile failed under new kernels 3.16 and up due to removed preprocessor macros
+   3. driver module name was not in accordance to all other native linux drivers
+M: 1. cast uart_physbase to resource_size_t
+   2. preprocessor macros __DATE__ and __TIME__ removed
+   3. changed Makefile and source names to produce driver module men_lx_z25.ko
+
+--------- start of git respository based driver maintenance ------------
 
 -----[ Release-1.9 ]-----
 [ 2014-11-14 16:22:58 by ts ]
@@ -38,7 +50,7 @@ frodo_serial_doc.c
 
 -----[ Release-1.5 ]-----
 [ 2007-12-07 17:30:39 by ts ]
-
+
 13z02590.xml
 - SW Module men_lx_chameleon added to be selected automatically
 frodo_serial_doc.c
@@ -65,7 +77,7 @@ File frodo_serial.c
 
 -----[ Release-1.2 ]-----
 [ 2006-10-30 18:42:45 by ts ]
-ä
+
 *** CHANGED FILES ***
 File frodo_serial.c
    API Change: [un]register_serial replaced by serial8250_[un]register_port
@@ -80,3 +92,36 @@ chameleon.h extended for new IP cores
 -----[ Release-1.0 ]-----
 [ 2005-02-16 14:59:36 by ub ]
 Initial Revision
+
+commit 8ced48c10c013b91e76056937faaca2d84469a40
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Wed Mar 18 17:46:17 2015 +0100
+
+    R: removed leftovers from old naming
+
+commit 8715c0354a5c84383f8763325e93763f10afc74e
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Thu Mar 12 16:00:35 2015 +0100
+
+    R: compile failed under new kernels 3.16 and up due to removed preprocessor macros
+    M: preprocessor macros __DATE__ and __TIME__ removed
+
+commit bf5ee08e634f6c7dc51d778b377878d687c94e62
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Thu Mar 12 15:25:26 2015 +0100
+
+    R: previous fileset did not have same structure as other LL drivers
+    M: moved DRIVERS and PACKAGE_DESC folder to toplevel directory, removed LINUX folder
+
+commit bb2c679350eaa7c8c7aa4c74d6050c85f362b6c9
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Wed Mar 11 16:17:24 2015 +0100
+
+    R: build failed due to removal of old chameleon IP code names
+    M: replaced supported IP core name with CHAMELEON_16Z025_UART
+
+commit 6f7f11d16540613bc7791c0b3f051f848121f385
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Wed Mar 11 14:17:42 2015 +0100
+
+    R: initial commit from mcvs rev. 1.9, driver renamed to match IP core
