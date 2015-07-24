@@ -1,3 +1,11 @@
+commit b80f04738e91ac94572437f878ab7d9ece35ff60
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Fri Jul 24 13:22:37 2015 +0200
+
+    R: registering memory mapped UARTs caused problem on F11S with kernel 3.16, all MMIO UARTs registered with same ttyS number
+    M: declared variables for mapbase and UART base volatile to ensure port struct gets initialised before call to
+       serial8250_register_8250_port()
+
 ===== [ History of fileset ART/13Z025-90/13Z025-90 ] =====
 
 commit cc499a68210d4740fb50cc7ab6a80c5146e5ad00 (tag: 13Z025-90_01_10)
