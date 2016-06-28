@@ -291,8 +291,8 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
             } else {
 				men_uart_port.iotype 		= UPIO_MEM;
 				drvData->uartBase[i]    	= (volatile void*)ioremap_nocache((ulong)uart_physbase+i*0x10,0x10);
-				men_uart_port.mapbase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
-				men_uart_port.membase 		= (volatile char*)drvData->uartBase[i];
+				men_uart_port.membase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
+				men_uart_port.mapbase 		= (volatile char*)drvData->uartBase[i];
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x\n", men_uart_port.membase );
             }
 #elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
@@ -337,9 +337,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 				modeval = Z25_MODE_SE;
 			else
 				modeval = G_menZ25_mode[G_menZ25Nr];
-		
 			DBGOUT(KERN_INFO "16Z025 channel %d: mode=0x%02x\n", G_menZ25Nr, modeval );
-			
 			MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
 
 			if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
@@ -394,8 +392,6 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
     /*--- are we io-mapped ? ---*/
     ioMapped = pci_resource_flags( chu->pdev, chu->bar ) & IORESOURCE_IO;
-    DBGOUT( "bar=%d ioMapped=0x%x\n", chu->bar, ioMapped );
-
     memset( &men_uart_port, 0, sizeof(men_uart_port));
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) /* new API */
@@ -411,14 +407,17 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
     } else {
 		men_uart_port.iotype 		= UPIO_MEM;
 		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
-		men_uart_port.mapbase 		= (volatile resource_size_t)uart_physbase;
 		men_uart_port.membase 		= (volatile char*)drvData->uartBase[0];
+		men_uart_port.mapbase 		= (volatile resource_size_t)uart_physbase;
+		men_uart_port.iobase 		= men_uart_port.mapbase;
     }
+
+
 #elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
-    men_uart_port.baud_base 		= baud_base * 16;
+    men_uart_port.baud_base 			= baud_base * 16;
     men_uart_port.irq 				= chu->irq;
     men_uart_port.flags 			= STD_COM_FLAGS;
-    men_uart_port.iomem_reg_shift 	= 0;
+    men_uart_port.iomem_reg_shift 		= 0;
 
     /* set address */
     if( ioMapped ) {
@@ -437,36 +436,34 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	if( ioMapped ) {
 		men_uart_port.port.iotype	= UPIO_PORT;
 		men_uart_port.port.iobase	= (unsigned long)uart_physbase;
-		DBGOUT(KERN_INFO "men_uart_port.port.iobase=0x%08x\n",
-			   men_uart_port.port.iobase );
+		DBGOUT(KERN_INFO "men_uart_port.port.iobase=0x%08x\n", men_uart_port.port.iobase );
 	} else {
 		men_uart_port.port.iotype	= UPIO_MEM;
 		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10);
 		men_uart_port.port.membase 	= (char*)drvData->uartBase[0];
 		men_uart_port.port.mapbase 	= (volatile unsigned long)uart_physbase;
-		DBGOUT(KERN_INFO "men_uart_port.port.membase=0x%08x\n",
-			   men_uart_port.port.membase );
+		men_uart_port.iobase 		= men_uart_port.mapbase;
+		DBGOUT(KERN_INFO "men_uart_port.port.membase=0x%08x\n", men_uart_port.port.membase );
 	}
 #endif
 
     /*
-     * set differential mode and half duplex mode
-     * according to kernel parameter. Default: 
-	 * RS232 (single ended)
+     * set differential mode and half duplex mode according to kernel parameter. Default: 
+     * RS232 (single ended)
      */
     if(( G_menZ25Nr >= MEN_Z25_MAX_SETUP) || (!G_menZ25_mode[G_menZ25Nr]))
 		modeval = Z25_MODE_SE;
     else
 		modeval = G_menZ25_mode[G_menZ25Nr];
 
-	DBGOUT(KERN_INFO "16Z125 instance %d: mode=0x%02x\n", chu->instance, modeval );
+    DBGOUT(KERN_INFO "16Z125 instance %d: mode=0x%02x\n", chu->instance, modeval );
     MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
-	if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
+    if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 		printk( KERN_ERR "*** register_serial() for Frodo UART %d failed\n", G_menZ25Nr);
     } else {
 		DBGOUT(KERN_INFO "16Z125 instance %d = /dev/ttyS%d\n", chu->instance, line );
 		drvData->line[0] = line;
-	}
+    }
 
     G_menZ25Nr++;
 
