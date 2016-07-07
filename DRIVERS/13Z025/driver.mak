@@ -24,3 +24,4 @@ MAK_INCL=$(MEN_INC_DIR)/../../NATIVE/MEN/men_chameleon.h
 MAK_INP1=men_z25_serial$(INP_SUFFIX)
 
 MAK_INP=$(MAK_INP1)
+ 

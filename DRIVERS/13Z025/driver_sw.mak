@@ -26,3 +26,4 @@ MAK_INP1=men_z25_serial$(INP_SUFFIX)
 
 MAK_INP=$(MAK_INP1)
 
+ 

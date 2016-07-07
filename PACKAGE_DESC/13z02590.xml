@@ -2,8 +2,8 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="packagedesc.xsd">
 	<name>13z02590</name>
 	<description>Linux serial driver package for MEN 16Z025 FPGA UART</description>
-	<date>2016-07-07</date>
-	<revision>Release-1.13</revision>
+	<date>2015-07-07</date>
+	<revision>Release-1.12</revision>
     <docroot>DRIVERS/13Z025/DOC/html/index.html</docroot>
 	<modellist>
 		<model>
