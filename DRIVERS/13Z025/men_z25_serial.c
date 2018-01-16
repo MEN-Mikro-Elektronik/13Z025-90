@@ -105,19 +105,13 @@
 #include <asm/serial.h>
 #include <MEN/men_chameleon.h>
 
-#ifdef CONFIG_MENEM04
-# include <MEN/men_typs.h>
-# include <MEN/sysparam2.h>
-#endif
-
 /* activate this to get thorough debug outputs */
 /* #define DBG */
 
-
-#define Z25_MODE_SE	0x01	/* single ended (RS232) */
-#define Z25_MODE_FDX	0x05	/* differential, full duplex */
-#define Z25_MODE_HDXE	0x0d	/* differential, half duplex, with echo */
-#define Z25_MODE_HDX	0x0f	/* differential, half duplex, echo suppressed */
+#define Z25_MODE_SE		0x01	/* single ended (RS232) */
+#define Z25_MODE_FDX		0x05	/* differential, full duplex */
+#define Z25_MODE_HDXE		0x0d	/* differential, half duplex, with echo */
+#define Z25_MODE_HDX		0x0f	/* differential, half duplex, echo suppressed */
 
 #define MEN_Z25_MAX_SETUP 	64
 #define Z25_DRV_NAM		"MEN 13Z025"
@@ -144,11 +138,6 @@
 # define UART_8250_REGISTER_FUNC	serial8250_register_port
 # define UART_8250_UNREGISTER_FUNC	serial8250_unregister_port
 # define UART_8250_IOMEMBASE  		men_uart_port.membase
-#elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
-# define UART_8250_PORT_STRUCT 		serial_struct
-# define UART_8250_REGISTER_FUNC	register_serial
-# define UART_8250_UNREGISTER_FUNC	unregister_serial
-# define UART_8250_IOMEMBASE  		men_uart_port.iomem_base
 #else
 # define UART_8250_PORT_STRUCT 		uart_8250_port
 # define UART_8250_REGISTER_FUNC	serial8250_register_8250_port
@@ -165,26 +154,24 @@ static int G_menZ25_mode[MEN_Z25_MAX_SETUP];
 static int uarts_probe( CHAMELEON_UNIT_T *chu );
 static int uarts_remove( CHAMELEON_UNIT_T *chu );
 
-static u16 G_modCodeArr[] = { 	CHAMELEON_16Z025_UART,  /* Standard Quad UART Z025 */
-								CHAMELEON_16Z125_UART, /* ChamV2 Single UART */
-								CHAMELEON_16Z057_UART, /*  Z025 w/ special clk */
-								CHAMELEON_MODCODE_END };
+static u16 G_modCodeArr[] = { 	CHAMELEON_16Z025_UART,  /* Standard Quad UART Z025 	*/
+				CHAMELEON_16Z125_UART, 	/* ChamV2 Single UART 		*/
+				CHAMELEON_16Z057_UART, 	/*  Z025 w/ special clk 	*/
+				CHAMELEON_MODCODE_END };
 
 static CHAMELEON_DRIVER_T G_driver = {
 	.name		=	"men_z25-serial",
-	.modCodeArr =	G_modCodeArr,
+	.modCodeArr 	=	G_modCodeArr,
 	.probe		=	uarts_probe,
 	.remove		=	uarts_remove
 };
 
-
 /** this structure is stored as driver_data in chameleon_unit */
 typedef struct {
-	volatile unsigned char *uartBase[4];	/* mapped base addresses of UARTs */
-	volatile unsigned char* modeReg;        /* mapped base addresses of mode register */
-	int  line[4];							/* serial.c lines assigned (for unregister) */
+	volatile unsigned char *uartBase[4];	/* mapped base addresses of UARTs 		*/
+	volatile unsigned char* modeReg;        /* mapped base addresses of mode register 	*/
+	int  line[4];				/* serial.c lines assigned (for unregister) 	*/
 } MEN_Z25_DRVDATA_T;
-
 
 /*******************************************************************/
 /** module parameters
@@ -208,7 +195,6 @@ module_param( baud_base, ulong, 0 );
 MODULE_PARM_DESC( mode, "phys. mode for each port e.g.: mode=\"se df_fdx df_hdxe\"" );
 MODULE_PARM_DESC( baud_base, "Base for baudrate generation" );
 
-
 /*******************************************************************/
 /** PNP function for classic Z25 (former Frodo) Quad UART
  *
@@ -228,28 +214,15 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 	int line, i, ioMapped;
 	MEN_Z25_DRVDATA_T *drvData;
 
-#ifdef CONFIG_MENEM04
-	{
-		char buf[20];
-		if( SysParamGet( "memclkhz", buf, sizeof(buf)) != 0 ){
-			printk( KERN_ERR "*** z25_probe: Can't determine memclkhz\n");
-			return -ENODEV;
-		}
-		baud_base = simple_strtoul( buf, NULL, 10 );
-		baud_base /= 32;
-	}
-#endif
-
 	uart_physbase = (unsigned char *)chu->phys;
 
-	DBGOUT("z25_probe: physBase=%p irq=%d baud_base=%d\n",
-		   uart_physbase, chu->irq, baud_base );
+	DBGOUT("z25_probe: physBase=%p irq=%d baud_base=%d\n", uart_physbase, chu->irq, baud_base );
 
 	/*--- get storage for intermediate data ---*/
 	drvData = kmalloc( sizeof(MEN_Z25_DRVDATA_T), GFP_KERNEL );
 	chu->driver_data = drvData;
 
-	if( !drvData ){
+	if( !drvData ) {
 		printk( KERN_ERR "z25_probe: no mem!\n");
 		return -ENOMEM;
 	}
@@ -269,18 +242,16 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 	exist_mask = MEN_Z25_READB(drvData->modeReg) & 0xf0;
 	DBGOUT( "Z25 exist_mask=0x%x\n", exist_mask );
 
-	for( i=0, b=0x10; i<4; ++i, b<<=1 ) 
-    {
-		DBGOUT(KERN_INFO Z25_DRV_NAM ": z25_probe run %d:\n", i );
+	for( i=0, b=0x10; i<4; ++i, b<<=1 ) {
 
+		DBGOUT(KERN_INFO Z25_DRV_NAM ": z25_probe run %d:\n", i );
 		drvData->line[i] = -1;	/* no serial dev number assigned */
 		if( exist_mask & b ) {
 			int modeval;
 			memset( &men_uart_port, 0, sizeof(men_uart_port));
-
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
 			men_uart_port.uartclk  			= baud_base * 16 ;
-			men_uart_port.irq 	   			= chu->irq;
+			men_uart_port.irq 	   		= chu->irq;
 			men_uart_port.flags 	   		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
 			men_uart_port.regshift 			= 0;
 
@@ -291,23 +262,9 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 			} else {
 				men_uart_port.iotype 		= UPIO_MEM;
 				drvData->uartBase[i]    	= (volatile void*)ioremap_nocache((ulong)uart_physbase+i*0x10,0x10);
-				men_uart_port.membase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
-				men_uart_port.mapbase 		= (volatile char*)drvData->uartBase[i];
+				men_uart_port.mapbase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
+				men_uart_port.membase 		= (volatile char*)drvData->uartBase[i];
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x\n", men_uart_port.membase );
-			}
-#elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
-			men_uart_port.baud_base 		= baud_base * 16;
-			men_uart_port.irq 				= chu->irq;
-			men_uart_port.flags 			= STD_COM_FLAGS;
-			men_uart_port.iomem_reg_shift 	= 0;
-
-			if( ioMapped ) {
-				men_uart_port.io_type 		= SERIAL_IO_PORT;
-				men_uart_port.port 			= (volatile unsigned)uart_physbase + i*0x10;
-			} else {
-				men_uart_port.io_type 		= SERIAL_IO_MEM;
-				drvData->uartBase[i] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase + i*0x10, 0x10 );
-				men_uart_port.membase 		= drvData->uartBase[i];
 			}
 #else /* 8250 API 3.7.x */
 			men_uart_port.port.irq 	   		= chu->irq;
@@ -323,32 +280,30 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 				drvData->uartBase[i] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase + i*0x10, 0x10 );
 				men_uart_port.port.membase	= (char*)drvData->uartBase[i];
 				men_uart_port.port.mapbase	= (volatile unsigned long)(uart_physbase + (i*0x10));
-				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x .mapbase=0x%08x\n", 
-					   men_uart_port.port.membase, 
-					   men_uart_port.port.mapbase );
+				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x .mapbase=0x%08x\n", men_uart_port.port.membase, men_uart_port.port.mapbase );
 			}
 #endif
-			/*
-			 * set differential mode and half duplex mode
-			 * according to kernel parameter. Default: 
-			 * RS232 (single ended)
-			 */
-			if(( G_menZ25Nr >= MEN_Z25_MAX_SETUP) || (!G_menZ25_mode[G_menZ25Nr]))
+			/* set differential mode and half duplex mode according to kernel parameter. Default: RS232 (single ended) */
+			if(( G_menZ25Nr >= MEN_Z25_MAX_SETUP ) || ( !G_menZ25_mode[G_menZ25Nr] ))
 				modeval = Z25_MODE_SE;
 			else
 				modeval = G_menZ25_mode[G_menZ25Nr];
+
 			DBGOUT(KERN_INFO "16Z025 channel %d: mode=0x%02x\n", G_menZ25Nr, modeval );
+
 			MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
+
 			if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 				printk( KERN_ERR "*** UART registering for 16Z025 UART %d failed\n", G_menZ25Nr);
 			} else {
 				drvData->line[i] = line;
 				G_menZ25Nr++;
 			}
-			return 0;
 		}
-    }
+	}
+	return 0;
 }
+
 
 
 /*******************************************************************/
@@ -390,6 +345,8 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
 	/*--- are we io-mapped ? ---*/
 	ioMapped = pci_resource_flags( chu->pdev, chu->bar ) & IORESOURCE_IO;
+    DBGOUT( "bar=%d ioMapped=0x%x\n", chu->bar, ioMapped );
+
 	memset( &men_uart_port, 0, sizeof(men_uart_port));
 
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) /* new API */
@@ -405,12 +362,9 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	} else {
 		men_uart_port.iotype 		= UPIO_MEM;
 		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
-		men_uart_port.membase 		= (volatile char*)drvData->uartBase[0];
 		men_uart_port.mapbase 		= (volatile resource_size_t)uart_physbase;
-		men_uart_port.iobase 		= men_uart_port.mapbase;
+		men_uart_port.membase 		= (volatile char*)drvData->uartBase[0];
 	}
-
-
 #elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
 	men_uart_port.baud_base 			= baud_base * 16;
 	men_uart_port.irq 				= chu->irq;
@@ -431,23 +385,23 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	men_uart_port.port.uartclk 		= baud_base * 16 ;
 	men_uart_port.port.flags		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
 
-	if( ioMapped ) 
-	{
+	if( ioMapped ) {
 		men_uart_port.port.iotype	= UPIO_PORT;
 		men_uart_port.port.iobase	= (unsigned long)uart_physbase;
-		DBGOUT(KERN_INFO "men_uart_port.port.iobase=0x%08x\n", men_uart_port.port.iobase );
+		DBGOUT(KERN_INFO "men_uart_port.port.iobase=0x%08x\n",
+			   men_uart_port.port.iobase );
 	} else {
 		men_uart_port.port.iotype	= UPIO_MEM;
 		drvData->uartBase[0] 	= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10);
 		men_uart_port.port.membase 	= (char*)drvData->uartBase[0];
 		men_uart_port.port.mapbase 	= (volatile unsigned long)uart_physbase;
-		men_uart_port.port.iobase 	= men_uart_port.port.mapbase;
-		DBGOUT(KERN_INFO "men_uart_port.port.membase=0x%08x\n", men_uart_port.port.membase );
+		DBGOUT(KERN_INFO "men_uart_port.port.membase=0x%08x\n",
+			   men_uart_port.port.membase );
 	}
 #endif
 
 	/*
-	 * set differential mode and half duplex mode according to kernel parameter. Default: 
+	 * set differential mode and half duplex mode according to kernel parameter. Default:
 	 * RS232 (single ended)
 	 */
 	if(( G_menZ25Nr >= MEN_Z25_MAX_SETUP) || (!G_menZ25_mode[G_menZ25Nr]))
@@ -457,8 +411,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
 	DBGOUT(KERN_INFO "16Z125 instance %d: mode=0x%02x\n", chu->instance, modeval );
 	MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
-	if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) 
-	{
+	if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 		printk( KERN_ERR "*** register_serial() for Frodo UART %d failed\n", G_menZ25Nr);
 	} else {
 		DBGOUT(KERN_INFO "16Z125 instance %d = /dev/ttyS%d\n", chu->instance, line );
@@ -693,4 +646,4 @@ module_exit(uarts_serial_cleanup);
 MODULE_LICENSE( "GPL" );
 MODULE_DESCRIPTION( "MEN Z25/125 UART Stub driver for serial.c" );
 MODULE_AUTHOR("Thomas Schnuerer <thomas.schnuerer@men.de>");
- 
+
