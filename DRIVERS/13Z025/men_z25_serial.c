@@ -3,92 +3,29 @@
  *        \file  frodo_serial.c
  *
  *      \author  kp/ub/ts
- *        $Date: 2014/07/16 17:19:33 $
- *    $Revision: 1.16 $
  *
- *        \brief Register 16Z025/125 UARTs at serial8250 core driver
+ *      \brief Register 16Z025/125 UARTs at serial8250 core driver
  *
  * Switches: CONFIG_MEN_Z025_UART_BASECLK - Set default base clock
  *                                          (default is 33333333 Hz).
- */
-/*-------------------------------[ History ]---------------------------------
  *
  *
- * -------------- end of cvs maintenance ------------------
  *
- * $Log: frodo_serial.c,v $
- * Revision 1.16  2014/07/16 17:19:33  ts
- * R: compile with kernel 3.14.6 and gcc 4.8 showed numerous warnings
- * M: corrected voidpointer casts to values and types of register pointers
- *
- * Revision 1.15  2013/07/31 16:40:26  ts
- * R: 1. on system with 2xF216 the 2nd F216(8xUART) worked in wrong mode
- * M: 1a. increased array size for max.# of initialized UARTs to 64
- *    1b. set all phy defaults to single ended (RS232)
- *
- * Revision 1.14  2013/05/16 21:52:39  ts
- * R: 1. compile failed with kernel 3.7.10
- *    2. potentially unsafe module parameter parse function
- *    3. many references to old driver name occur still in dmesg dumps
- * M: 1. updated driver to use struct uart_8250_port
- *    2. fixed frodo_setup to use safe functions like strncpy etc.
- *    3. replaced dump texts with neutral IP core names where possible
- *
- * Revision 1.13  2010/01/25 16:24:01  rt
- * R: 1) Wrong baud rate at EM9 boards (Z125 in onboard FPGA).
- * M: 1) Added CONFIG_MEN_Z025_UART_BASECLK parameter.
- *
- * Revision 1.12  2009/10/15 18:42:46  ts
- * R: printk message without argument caused compiler warning
- * M: removed %s in line 452
- *
- * Revision 1.11  2008/09/04 14:11:58  ts
- * R: Cosmetics
- * M: replaced printk() in line 457 to DBGOUT like the other debug outputs
- *
- * Revision 1.10  2007/12/07 16:57:07  ts
- * removed unnecessary include linux/config.h
- *
- * Revision 1.9  2007/06/11 15:17:36  ts
- * call pci_enable_device() so PCI Irq works at new kernels
- * correct baud_base to 115200 automatically for Z57 units
- *
- * Revision 1.8  2007/04/13 13:39:52  ts
- * integrated Z057 Unit
- * fixed baudrate setting for new Boards e.g. F210
- * moved Documentation to File frodo_serial_doc.c
- *
- * Revision 1.7  2007/02/28 18:42:13  ts
- * Added support for Z125 ChamV2 single UART unit
- *
- * Revision 1.6  2006/10/30 18:35:01  ts
- * API Change: [un]register_serial replaced by serial8250_[un]register_port
- * from kernel 2.6.12 on
- *
- * Revision 1.5  2005/02/16 14:59:02  ub
- * Documentation changes
- *
- * Revision 1.4  2005/01/25 16:00:15  ub
- * cosmetics
- *
- * Revision 1.3  2005/01/05 15:58:37  ub
- * Adapted for Linux kernel 2.6
- *
- * Revision 1.2  2004/12/13 12:30:31  ub
- * Frodo Additional Control Register used now.
- *
- * Revision 1.1  2004/11/29 11:34:22  ub
- * Initial Revision
- *
- *
- *---------------------------------------------------------------------------
- * (c) Copyright 2004-2013 by MEN mikro elektronik GmbH, Nuremberg, Germany
- *
- * This program is free software; you can redistribute  it and/or modify it
- * under  the terms of  the GNU General  Public License as published by the
- * Free Software Foundation;  either version 2 of the  License, or (at your
- * option) any later version.
  ****************************************************************************/
+/*
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 #include <linux/kernel.h>
 #include <linux/module.h>
@@ -97,10 +34,8 @@
 #include <linux/init.h>
 #include <linux/serial.h>
 #include <linux/version.h>
-#if LINUX_VERSION_CODE > KERNEL_VERSION(2,6,12)
 #include <linux/serial_core.h>
 #include <linux/serial_8250.h>
-#endif
 #include <asm/io.h>
 #include <asm/serial.h>
 #include <MEN/men_chameleon.h>
@@ -184,19 +119,14 @@ static char *mode = "";
  */
 static ulong baud_base = (33333333/32); /* was magic 1041600 in prev. Revision */
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,5,0)
-MODULE_PARM( mode, "s" );
-MODULE_PARM( baud_base, "l" );
-#else
 module_param( mode, charp, 0 );
 module_param( baud_base, ulong, 0 );
-#endif
 
 MODULE_PARM_DESC( mode, "phys. mode for each port e.g.: mode=\"se df_fdx df_hdxe\"" );
 MODULE_PARM_DESC( baud_base, "Base for baudrate generation" );
 
 /*******************************************************************/
-/** PNP function for classic Z25 (former Frodo) Quad UART
+/** PNP function for 16Z025 Quad UART
  *
  * This gets called when the chameleon PNP subsystem starts and
  * is called for each Z25 unit. The Function searches in base+0x40 for
@@ -246,6 +176,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 
 		DBGOUT(KERN_INFO Z25_DRV_NAM ": z25_probe run %d:\n", i );
 		drvData->line[i] = -1;	/* no serial dev number assigned */
+
 		if( exist_mask & b ) {
 			int modeval;
 			memset( &men_uart_port, 0, sizeof(men_uart_port));
@@ -261,9 +192,9 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 				DBGOUT(KERN_INFO "men_uart_port.iobase=0x%08x\n", men_uart_port.iobase );
 			} else {
 				men_uart_port.iotype 		= UPIO_MEM;
-				drvData->uartBase[i]    	= (volatile void*)ioremap_nocache((ulong)uart_physbase+i*0x10,0x10);
-				men_uart_port.mapbase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
+				drvData->uartBase[i]    	= (volatile void*)ioremap_nocache((ulong)uart_physbase + i*0x10, 0x10 );
 				men_uart_port.membase 		= (volatile char*)drvData->uartBase[i];
+				men_uart_port.mapbase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x\n", men_uart_port.membase );
 			}
 #else /* 8250 API 3.7.x */
@@ -290,7 +221,6 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 				modeval = G_menZ25_mode[G_menZ25Nr];
 
 			DBGOUT(KERN_INFO "16Z025 channel %d: mode=0x%02x\n", G_menZ25Nr, modeval );
-
 			MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
 
 			if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
@@ -304,17 +234,14 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 	return 0;
 }
 
-
-
 /*******************************************************************/
-/** PNP function for New Z125 Single Unit UART
+/** PNP function for 16Z125 Quad UART
  *
  * This gets called when the chameleon PNP subsystem starts and
- * is called for each Z125 unit. The New Z125 UARTS are instantiated as
- * 1 true UART per FPGA Unit. Therefore one call to this Probe function
- * always refers to 1 physical UART.
+ * is called for each Z125 unit. 16Z125 UARTS are instantiated as
+ * 1 true UART per FPGA Unit.
  *
- * \param chu	\IN frodo unit found
+ * \param chu	\IN Z125 unit found
  * \return 0 	on success or negative linux error number
  */
 static int z125_probe( CHAMELEON_UNIT_T *chu )
@@ -345,7 +272,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
 	/*--- are we io-mapped ? ---*/
 	ioMapped = pci_resource_flags( chu->pdev, chu->bar ) & IORESOURCE_IO;
-    DBGOUT( "bar=%d ioMapped=0x%x\n", chu->bar, ioMapped );
+	DBGOUT( "bar=%d ioMapped=0x%x\n", chu->bar, ioMapped );
 
 	memset( &men_uart_port, 0, sizeof(men_uart_port));
 
@@ -364,21 +291,6 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
 		men_uart_port.mapbase 		= (volatile resource_size_t)uart_physbase;
 		men_uart_port.membase 		= (volatile char*)drvData->uartBase[0];
-	}
-#elif LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
-	men_uart_port.baud_base 			= baud_base * 16;
-	men_uart_port.irq 				= chu->irq;
-	men_uart_port.flags 			= STD_COM_FLAGS;
-	men_uart_port.iomem_reg_shift 		= 0;
-
-	/* set address */
-	if( ioMapped ) {
-		men_uart_port.io_type 		= SERIAL_IO_PORT;
-		men_uart_port.port 			= (volatile unsigned)uart_physbase;
-	} else {
-		men_uart_port.io_type  		= SERIAL_IO_MEM;
-		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
-		men_uart_port.iomem_base 	= drvData->uartBase[0];
 	}
 #else /* 8250 API 3.7.x */
 	men_uart_port.port.irq 	   		= chu->irq;
@@ -412,7 +324,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	DBGOUT(KERN_INFO "16Z125 instance %d: mode=0x%02x\n", chu->instance, modeval );
 	MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
 	if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
-		printk( KERN_ERR "*** register_serial() for Frodo UART %d failed\n", G_menZ25Nr);
+		printk( KERN_ERR "*** register_serial() for 16Z125 UART %d failed\n", G_menZ25Nr);
 	} else {
 		DBGOUT(KERN_INFO "16Z125 instance %d = /dev/ttyS%d\n", chu->instance, line );
 		drvData->line[0] = line;
@@ -474,13 +386,10 @@ static int uarts_probe( CHAMELEON_UNIT_T *chu )
 	return(retval);
 }
 
-
-
-
 /*******************************************************************/
 /** PNP function to remove registered Z25 UARTs
  *
- * \param chu		\IN frodo unit to remove
+ * \param chu		\IN 16Z025 unit to remove
  * \return 0 on success or negative linux error number
  */
 static int z25_remove( CHAMELEON_UNIT_T *chu )
@@ -493,23 +402,16 @@ static int z25_remove( CHAMELEON_UNIT_T *chu )
 	if( drvData ){
 		for( i=0; i<4; i++ ) {
 			if( drvData->line[i] >= 0 ) {
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
-				unregister_serial( drvData->line[i] );
-#else
 				serial8250_unregister_port(drvData->line[i]);
-#endif
 				iounmap( drvData->uartBase[i] );
 			}
 		}
-
 		iounmap( drvData->modeReg );
-		/* kfree( drvData ); */
-		/* chu->driver_data = NULL; */
+		kfree( drvData );
+		chu->driver_data = NULL;
 	}
 	return 0;
 }
-
-
 
 /*******************************************************************/
 /** PNP function to remove registered Z25 UARTs
@@ -525,21 +427,14 @@ static int z125_remove( CHAMELEON_UNIT_T *chu )
 
 	if( drvData ){
 		if( drvData->line[0] >= 0 ) {
-#if LINUX_VERSION_CODE < KERNEL_VERSION(2,6,14)
-			unregister_serial( drvData->line[0] );
-#else
 			serial8250_unregister_port(drvData->line[0]);
-#endif
 			iounmap( drvData->uartBase[0] );
 		}
-
 		kfree( drvData );
 		chu->driver_data = NULL;
 	}
 	return 0;
 }
-
-
 
 /*******************************************************************/
 /** helper to remove UART from kernel during unload
@@ -558,14 +453,11 @@ static int uarts_remove( CHAMELEON_UNIT_T *chu )
 	}
 }
 
-
 /*******************************************************************/
 /** Setup G_menZ25_mode array according to passed string
  *
- * called either by the kernel when frodo_mode= kernel parameter passed
- * or by frodo_serial_init() below
  */
-static int __init frodo_setup( char *str )
+static int __init z025_setup( char *str )
 {
 	char buf[MODE_MAX_LEN];
 	char *s,*t;
@@ -574,10 +466,10 @@ static int __init frodo_setup( char *str )
 	memset( buf, 0x0, sizeof(buf));
 	strncpy( buf, str, MODE_MAX_LEN );
 	s = buf;
-	DBGOUT("frodo_setup: mode='%s'\n", s );
+	DBGOUT("men_13z025_setup: mode='%s'\n", s );
 
 	if( *s=='\0' )
-		return 1;				/* empty string */
+		return 1; /* empty string */
 
 	while( 1 ) {
 		/*
@@ -619,9 +511,8 @@ static int __init frodo_setup( char *str )
  */
 static int __init uarts_serial_init(void)
 {
-	/*  printk(KERN_INFO Z25_DRV_NAM " built %s %s:\n", __DATE__, __TIME__ ); */
 #ifdef MODULE
-	frodo_setup( mode );		/* pass module parameter */
+	z025_setup( mode );		/* pass module parameter */
 #endif
 	men_chameleon_register_driver( &G_driver );
 	return 0;
@@ -637,7 +528,7 @@ static void __exit uarts_serial_cleanup(void)
 }
 
 /* called when statically linked into kernel */
-__setup( "frodo_mode=", frodo_setup );
+__setup( "z025_mode=", z025_setup );
 
 /*--------------------------------------------------------------------------*/
 module_init(uarts_serial_init);
@@ -646,4 +537,4 @@ module_exit(uarts_serial_cleanup);
 MODULE_LICENSE( "GPL" );
 MODULE_DESCRIPTION( "MEN Z25/125 UART Stub driver for serial.c" );
 MODULE_AUTHOR("Thomas Schnuerer <thomas.schnuerer@men.de>");
-
+MODULE_VERSION( MEN_REPO_VERSION );

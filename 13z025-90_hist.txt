@@ -1,4 +1,24 @@
-commit b80f04738e91ac94572437f878ab7d9ece35ff60
+commit 8e717c6bc4f80461125c93ed8830b5a9613de0d5 (tag: 13Z025-90_01_13)
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Thu Jul 7 09:24:47 2016 +0200
+
+    R: ttyS-numbers werent counted up on Ubuntu 14.10
+    M: wrong/missing assignment of iobase for kernels > 3.7.0, fixed for 16Z125.
+       The serial core driver uses port.iobase as index key even for mem mapped UARTs.
+
+qcommit 9a8f1a5914890978cd9e0ba3fdcef60d05a8db0e (tag: 13Z025-90_01_12)
+Author: thomas.schnuerer <thomas.schnuerer@men>
+Date:   Fri Jul 24 13:30:15 2015 +0200
+
+    R: 1. registering mmmapped F206 UARTs caused all UARTs to be registered with same ttySx number
+       2. variable namings with old driver naming were still left in source 
+       3. version info in XML needed update
+    M: 1. declared variables for mapbase and UART base volatile to ensure port struct gets initialised before call to
+          serial8250_register_8250_port()
+       2. renamed global struct for all UARTs to G_menZ25
+       3. updated xml revision to 1.12 
+
+commit b80f04738e91ac94572437f878ab7d9ece35ff60 (tag: 13Z025-90_01_11)
 Author: thomas.schnuerer <thomas.schnuerer@men>
 Date:   Fri Jul 24 13:22:37 2015 +0200
 
@@ -6,18 +26,16 @@ Date:   Fri Jul 24 13:22:37 2015 +0200
     M: declared variables for mapbase and UART base volatile to ensure port struct gets initialised before call to
        serial8250_register_8250_port()
 
-===== [ History of fileset ART/13Z025-90/13Z025-90 ] =====
-
 commit cc499a68210d4740fb50cc7ab6a80c5146e5ad00 (tag: 13Z025-90_01_10)
 Author: thomas.schnuerer <thomas.schnuerer@men>
 Date:   Fri May 15 12:31:52 2015 +0200
 
-R: 1. compilerwarning about different size in cast. 
-   2. compile failed under new kernels 3.16 and up due to removed preprocessor macros
-   3. driver module name was not in accordance to all other native linux drivers
-M: 1. cast uart_physbase to resource_size_t
-   2. preprocessor macros __DATE__ and __TIME__ removed
-   3. changed Makefile and source names to produce driver module men_lx_z25.ko
+    R: 1. compilerwarning about different size in cast. 
+       2. compile failed under new kernels 3.16 and up due to removed preprocessor macros
+       3. driver module name was not in accordance to all other native linux drivers
+    M: 1. cast uart_physbase to resource_size_t
+       2. preprocessor macros __DATE__ and __TIME__ removed
+       3. changed Makefile and source names to produce driver module men_lx_z25.ko
 
 --------- start of git respository based driver maintenance ------------
 

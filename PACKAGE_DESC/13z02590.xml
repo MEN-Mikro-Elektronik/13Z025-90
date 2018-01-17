@@ -2,8 +2,8 @@
 <package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="packagedesc.xsd">
 	<name>13z02590</name>
 	<description>Linux serial driver package for MEN 16Z025 FPGA UART</description>
-	<date>2016-07-07</date>
-	<revision>Release-1.13</revision>
+	<date>2018-01-17</date>
+	<revision>1.14</revision>
     <docroot>DRIVERS/13Z025/DOC/html/index.html</docroot>
 	<modellist>
 		<model>
@@ -20,7 +20,7 @@
 			</settinglist>
 			<swmodulelist>
 				<swmodule>
-					<name>men_lx_z25_serial</name>
+					<name>men_lx_z25</name>
 					<description>Linux char driver for 16Z025</description>
 					<type>Native Driver</type>
 					<makefilepath>DRIVERS/13Z025/driver.mak</makefilepath>
