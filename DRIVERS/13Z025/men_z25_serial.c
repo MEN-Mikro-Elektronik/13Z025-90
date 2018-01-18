@@ -537,4 +537,4 @@ module_exit(uarts_serial_cleanup);
 MODULE_LICENSE( "GPL" );
 MODULE_DESCRIPTION( "MEN Z25/125 UART Stub driver for serial.c" );
 MODULE_AUTHOR("Thomas Schnuerer <thomas.schnuerer@men.de>");
-MODULE_VERSION( "" );
+MODULE_VERSION( "13Z025-90_01_14-0-gec8b429" );
