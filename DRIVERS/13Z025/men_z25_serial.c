@@ -193,8 +193,8 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 			} else {
 				men_uart_port.iotype 		= UPIO_MEM;
 				drvData->uartBase[i]    	= (volatile void*)ioremap_nocache((ulong)uart_physbase + i*0x10, 0x10 );
-				men_uart_port.membase 		= (volatile char*)drvData->uartBase[i];
-				men_uart_port.mapbase 		= (volatile resource_size_t)(uart_physbase + i*0x10);
+				men_uart_port.membase 		= (unsigned char*)drvData->uartBase[i];
+				men_uart_port.mapbase 		= (volatile resource_size_t)(volatile uintptr_t)(uart_physbase + i*0x10);
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x\n", men_uart_port.membase );
 			}
 #else /* 8250 API 3.7.x */
@@ -289,8 +289,8 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	} else {
 		men_uart_port.iotype 		= UPIO_MEM;
 		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
-		men_uart_port.mapbase 		= (volatile resource_size_t)uart_physbase;
-		men_uart_port.membase 		= (volatile char*)drvData->uartBase[0];
+		men_uart_port.mapbase 		= (volatile resource_size_t)(volatile uintptr_t)uart_physbase;
+		men_uart_port.membase 		= (unsigned char*)drvData->uartBase[0];
 	}
 #else /* 8250 API 3.7.x */
 	men_uart_port.port.irq 	   		= chu->irq;
