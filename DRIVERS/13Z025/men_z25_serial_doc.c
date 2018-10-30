@@ -13,34 +13,24 @@
  *
  *     \switches -
  */
- /*-------------------------------[ History ]--------------------------------
- *
- * $Log: frodo_serial_doc.c,v $
- * Revision 1.6  2013/07/31 16:41:41  ts
- * R: default setting of phy modes wasnt clearly stated
- * M: added comment about default mode = RS232 if mode parameter is omitted
- *
- * Revision 1.5  2013/05/16 21:53:58  ts
- * R: newer 2.6 kernels allow specifying more than 4 UARTs as boot parameter
- * M: updated documentation to show usage of nr_uarts= parameter
- *
- * Revision 1.4  2007/08/30 16:55:10  ts
- * corrected statement about special EM01 UART clock setting
- * removed unnecessary comment about PCI Clocks
- *
- * Revision 1.3  2007/06/11 13:34:32  ts
- * added chapter about BIOS settings
- *
- * Revision 1.2  2007/04/13 14:18:28  ts
- * Cosmetics
- *
- * Revision 1.1  2007/04/13 13:40:06  ts
- * Initial Revision
- *
- *
+ /*
  *---------------------------------------------------------------------------
  * (c) Copyright 2004 by MEN Mikro Elektronik GmbH, Nuremberg, Germany
  ****************************************************************************/
+/*
+* This program is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 2 of the License, or
+* (at your option) any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
 
 /*! \mainpage Linux native driver for MEN Chameleon FPGA driver/device registration.
 
