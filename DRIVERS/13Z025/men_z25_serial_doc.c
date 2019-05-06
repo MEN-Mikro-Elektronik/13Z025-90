@@ -202,7 +202,7 @@
 */
 
 
-/** \page dummy
+/** \page z25dummy MEN logo
   \menimages
 */
  
