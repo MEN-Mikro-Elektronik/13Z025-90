@@ -1,6 +1,6 @@
 /*********************  P r o g r a m  -  M o d u l e ***********************/
 /*!
- *        \file  frodo_serial.c
+ *        \file  men_z25_serial.c
  *
  *      \author  kp/ub/ts
  *

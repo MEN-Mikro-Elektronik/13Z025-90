@@ -1,6 +1,6 @@
 /*********************  P r o g r a m  -  M o d u l e ***********************/
 /*!
- *        \file  frodo_serial_doc.c
+ *        \file  men_z25_serial_doc.c
  *
  *      \author  thomas.schnuerer@men.de
  *        $Date: 2013/07/31 16:41:41 $
