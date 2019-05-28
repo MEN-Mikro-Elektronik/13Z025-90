@@ -98,8 +98,8 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html"><param name="Name" value="chameleon.h"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a140"><param name="Name" value="CHAMELEONV2_FILENAME_SIZE"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a156"><param name="Name" value="CHAMELEONV2_HANDLE"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a117"><param name="Name" value="CHAMELEONV2_FILENAME_SIZE"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a133"><param name="Name" value="CHAMELEONV2_HANDLE"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="structCHAMELEON__DRIVER__T.html"><param name="Name" value="CHAMELEON_DRIVER_T"></OBJECT>
   <UL>
@@ -209,7 +209,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="CHAMELEONV2_FILENAME_SIZE"><param name="Name" value="CHAMELEONV2_FILENAME_SIZE"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a140"><param name="Name" value="chameleon.h"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a117"><param name="Name" value="chameleon.h"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="structCHAMELEONV2__FIND.html"><param name="Name" value="CHAMELEONV2_FIND"></OBJECT>
   <UL>
@@ -223,7 +223,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="CHAMELEONV2_HANDLE"><param name="Name" value="CHAMELEONV2_HANDLE"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a156"><param name="Name" value="chameleon.h"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="chameleon_8h.html#a133"><param name="Name" value="chameleon.h"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="CHAMELEONV2_HANDLE_ILL"><param name="Name" value="CHAMELEONV2_HANDLE_ILL"></OBJECT>
   <UL>
@@ -327,19 +327,6 @@
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="structCHAMELEONV2__FIND.html#o5"><param name="Name" value="CHAMELEONV2_FIND"></OBJECT>
   </UL>
-  <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html"><param name="Name" value="frodo_serial.c"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a31"><param name="Name" value="frodo_setup"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a21"><param name="Name" value="uarts_probe"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a28"><param name="Name" value="z125_probe"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a30"><param name="Name" value="z125_remove"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a27"><param name="Name" value="z25_probe"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a29"><param name="Name" value="z25_remove"></OBJECT>
-  </UL>
-  <LI><OBJECT type="text/sitemap"><param name="See Also" value="frodo_setup"><param name="Name" value="frodo_setup"></OBJECT>
-  <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a31"><param name="Name" value="frodo_serial.c"></OBJECT>
-  </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="group"><param name="Name" value="group"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="structCHAMELEONV2__BRIDGE.html#o9"><param name="Name" value="CHAMELEONV2_BRIDGE"></OBJECT>
@@ -381,6 +368,14 @@
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="magicWord"><param name="Name" value="magicWord"></OBJECT>
   <UL>
     <LI><OBJECT type="text/sitemap"><param name="Local" value="structCHAMELEONV2__TABLE.html#o5"><param name="Name" value="CHAMELEONV2_TABLE"></OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html"><param name="Name" value="men_z25_serial.c"></OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a21"><param name="Name" value="uarts_probe"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a28"><param name="Name" value="z125_probe"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a30"><param name="Name" value="z125_remove"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a27"><param name="Name" value="z25_probe"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a29"><param name="Name" value="z25_remove"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="minRevision"><param name="Name" value="minRevision"></OBJECT>
   <UL>
@@ -451,7 +446,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="uarts_probe"><param name="Name" value="uarts_probe"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a21"><param name="Name" value="frodo_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a21"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="UnitIdent"><param name="Name" value="UnitIdent"></OBJECT>
   <UL>
@@ -470,17 +465,17 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z125_probe"><param name="Name" value="z125_probe"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a28"><param name="Name" value="frodo_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a28"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z125_remove"><param name="Name" value="z125_remove"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a30"><param name="Name" value="frodo_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a30"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z25_probe"><param name="Name" value="z25_probe"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a27"><param name="Name" value="frodo_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a27"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z25_remove"><param name="Name" value="z25_remove"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="frodo__serial_8c.html#a29"><param name="Name" value="frodo_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a29"><param name="Name" value="men_z25_serial.c"></OBJECT>
 </UL>

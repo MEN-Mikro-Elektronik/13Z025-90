@@ -17,9 +17,9 @@ files.html
 chameleon_8h-source.html
 men__chameleon_8h-source.html
 chameleon_8h.html
-frodo__serial_8c.html
-frodo__serial__doc_8c.html
 men__chameleon_8h.html
+men__z25__serial_8c.html
+men__z25__serial__doc_8c.html
 annotated.html
 functions.html
 functions_vars.html
@@ -37,8 +37,8 @@ structCHAMELEONV2__TABLE.html
 structCHAMELEONV2__UNIT.html
 structCHAMELEONV2__UNIT__T.html
 structFPGA__HEADER__INFO.html
-structFRODO__DRVDATA__T.html
-dummy.html
+structMEN__Z25__DRVDATA__T.html
+z25dummy.html
 group____CHAMV2__ERRCODES.html
 group____CHAMV2__SUCCCODES.html
 group____CHAM__MAGICWORD.html

@@ -8,9 +8,9 @@
 <LI><OBJECT type="text/sitemap"><param name="Name" value="File List"><param name="Local" value="files.html"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="chameleon.h"><param name="Local" value="chameleon_8h.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="frodo_serial.c"><param name="Local" value="frodo__serial_8c.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="frodo_serial_doc.c"><param name="Local" value="frodo__serial__doc_8c.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="men_chameleon.h"><param name="Local" value="men__chameleon_8h.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="men_z25_serial.c"><param name="Local" value="men__z25__serial_8c.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="men_z25_serial_doc.c"><param name="Local" value="men__z25__serial__doc_8c.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Data Structures"><param name="Local" value="annotated.html"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
@@ -28,7 +28,7 @@
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CHAMELEONV2_UNIT"><param name="Local" value="structCHAMELEONV2__UNIT.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="CHAMELEONV2_UNIT_T"><param name="Local" value="structCHAMELEONV2__UNIT__T.html"><param name="ImageNumber" value="11"></OBJECT>
   <LI><OBJECT type="text/sitemap"><param name="Name" value="FPGA_HEADER_INFO"><param name="Local" value="structFPGA__HEADER__INFO.html"><param name="ImageNumber" value="11"></OBJECT>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="FRODO_DRVDATA_T"><param name="Local" value="structFRODO__DRVDATA__T.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="MEN_Z25_DRVDATA_T"><param name="Local" value="structMEN__Z25__DRVDATA__T.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Data Fields"><param name="Local" value="functions.html"><param name="ImageNumber" value="11"></OBJECT>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Modules"><param name="Local" value="modules.html"><param name="ImageNumber" value="1"></OBJECT>
@@ -52,6 +52,6 @@
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Globals"><param name="Local" value="globals.html"><param name="ImageNumber" value="11"></OBJECT>
 <LI><OBJECT type="text/sitemap"><param name="Name" value="Related Pages"><param name="Local" value="pages.html"><param name="ImageNumber" value="1"></OBJECT>
   <UL>
-  <LI><OBJECT type="text/sitemap"><param name="Name" value="dummy"><param name="Local" value="dummy.html"><param name="ImageNumber" value="11"></OBJECT>
+  <LI><OBJECT type="text/sitemap"><param name="Name" value="MEN logo"><param name="Local" value="z25dummy.html"><param name="ImageNumber" value="11"></OBJECT>
   </UL>
 </UL>
