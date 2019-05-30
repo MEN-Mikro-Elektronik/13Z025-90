@@ -4,7 +4,7 @@
 	<description>Linux serial driver package for MEN 16Z025 FPGA UART</description>
 	<date>2018-01-18</date>
 	<revision>1.14</revision>
-    <docroot>DRIVERS/13Z025/DOC/html/index.html</docroot>
+	<docroot>DRIVERS/13Z025/DOC/html/index.html</docroot>
 	<modellist>
 		<model>
 			<hwname>16Z025_UART</hwname>
@@ -12,9 +12,9 @@
 			<devnameprefix>UART</devnameprefix>
 			<devtype>NATIVE</devtype>
 			<busif>ChameleonBus</busif>
-            <autoid>
-                <chamunitid>0x07</chamunitid>
-            </autoid>
+			<autoid>
+				<chamunitid>0x07</chamunitid>
+			</autoid>
 			<settinglist>
 				<debugsetting desc="false" drv="false" mk="false" oss="false"/>
 			</settinglist>
@@ -24,14 +24,14 @@
 					<description>Linux char driver for 16Z025</description>
 					<type>Native Driver</type>
 					<makefilepath>DRIVERS/13Z025/driver.mak</makefilepath>
-                    		<os>Linux</os>
+					<os>Linux</os>
 				</swmodule>
 				<swmodule>
 					<name>men_lx_chameleon</name>
 					<description>Linux native chameleon driver</description>
 					<type>Native Driver</type>
 					<makefilepath>DRIVERS/CHAMELEON/driver.mak</makefilepath>
-                    		<os>Linux</os>
+					<os>Linux</os>
 				</swmodule>
 			</swmodulelist>
 		</model>
