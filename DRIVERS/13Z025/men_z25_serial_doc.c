@@ -3,8 +3,6 @@
  *        \file  men_z25_serial_doc.c
  *
  *      \author  thomas.schnuerer@men.de
- *        $Date: 2013/07/31 16:41:41 $
- *    $Revision: 1.6 $
  *
  *      \brief   User documentation for MEN Chameleon UART FPGA driver/device
  *               registration
