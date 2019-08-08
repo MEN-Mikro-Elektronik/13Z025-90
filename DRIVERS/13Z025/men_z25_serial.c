@@ -118,12 +118,15 @@ static char *mode = "";
  * is fed into the FPGAs Carrier Board like the F206/F210.
  */
 static ulong baud_base = (33333333/32); /* was magic 1041600 in prev. Revision */
+static char *fixed_type = "0";
 
 module_param( mode, charp, 0 );
 module_param( baud_base, ulong, 0 );
+module_param( fixed_type, charp, 0 );
 
 MODULE_PARM_DESC( mode, "phys. mode for each port e.g.: mode=\"se df_fdx df_hdxe\"" );
 MODULE_PARM_DESC( baud_base, "Base for baudrate generation" );
+MODULE_PARM_DESC( fixed_type, "UART port fixed_type=0 (autoscan)/fixed_type=1 (PORT_16550A)" );
 
 /*******************************************************************/
 /** PNP function for 16Z025 Quad UART
@@ -146,7 +149,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 
 	uart_physbase = (unsigned char *)chu->phys;
 
-	DBGOUT("z25_probe: physBase=%p irq=%d baud_base=%d\n", uart_physbase, chu->irq, baud_base );
+	DBGOUT("z25_probe: physBase=%p irq=%d baud_base=%d\n, fixed_type=%c", uart_physbase, chu->irq, baud_base, fixed_type );
 
 	/*--- get storage for intermediate data ---*/
 	drvData = kmalloc( sizeof(MEN_Z25_DRVDATA_T), GFP_KERNEL );
@@ -222,6 +225,12 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 
 			DBGOUT(KERN_INFO "16Z025 channel %d: mode=0x%02x\n", G_menZ25Nr, modeval );
 			MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
+
+			if( strcmp( fixed_type, "0" ) ) {
+				DBGOUT("z25_probe: physBase=%p fixed_type PORT_16550A", uart_physbase);
+				men_uart_port.port.flags |= UPF_FIXED_TYPE;
+				men_uart_port.port.type = PORT_16550A;
+			}
 
 			if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 				printk( KERN_ERR "*** UART registering for 16Z025 UART %d failed\n", G_menZ25Nr);
@@ -323,6 +332,13 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
 	DBGOUT(KERN_INFO "16Z125 instance %d: mode=0x%02x\n", chu->instance, modeval );
 	MEN_Z25_WRITEB( modeval, UART_8250_IOMEMBASE + 0x07);
+
+	if( strcmp( fixed_type,"0" ) ) {
+		DBGOUT("z125_probe: physBase=%p fixed_type PORT_16550A", uart_physbase);
+		men_uart_port.port.flags |= UPF_FIXED_TYPE;
+		men_uart_port.port.type = PORT_16550A;
+	}
+
 	if ((line = UART_8250_REGISTER_FUNC( &men_uart_port )) < 0) {
 		printk( KERN_ERR "*** register_serial() for 16Z125 UART %d failed\n", G_menZ25Nr);
 	} else {
