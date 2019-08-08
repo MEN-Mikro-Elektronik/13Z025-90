@@ -149,7 +149,8 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 
 	uart_physbase = (unsigned char *)chu->phys;
 
-	DBGOUT("z25_probe: physBase=%p irq=%d baud_base=%d\n, fixed_type=%c", uart_physbase, chu->irq, baud_base, fixed_type );
+	DBGOUT("z125_probe: physBase=%p irq=%d baud_base=%d\n",
+		   uart_physbase, chu->irq, baud_base );
 
 	/*--- get storage for intermediate data ---*/
 	drvData = kmalloc( sizeof(MEN_Z25_DRVDATA_T), GFP_KERNEL );
