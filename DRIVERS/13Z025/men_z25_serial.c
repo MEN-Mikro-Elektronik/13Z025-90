@@ -9,8 +9,8 @@
  * Switches: CONFIG_MEN_Z025_UART_BASECLK - Set default base clock
  *                                          (default is 33333333 Hz).
  *
- *
- *
+ *---------------------------------------------------------------------------
+ * Copyright 2019, MEN Mikro Elektronik GmbH
  ****************************************************************************/
 /*
  * This program is free software: you can redistribute it and/or modify
