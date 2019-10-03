@@ -481,7 +481,8 @@ static int __init z025_setup( char *str )
 	int i = 0;
 
 	memset( buf, 0x0, sizeof(buf));
-	strncpy( buf, str, MODE_MAX_LEN );
+	strncpy( buf, str, MODE_MAX_LEN-1 );
+	buf[MODE_MAX_LEN-1] = '\0';
 	s = buf;
 	DBGOUT("men_13z025_setup: mode='%s'\n", s );
 
