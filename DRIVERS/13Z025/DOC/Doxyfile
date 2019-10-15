@@ -1,7 +1,7 @@
 @INCLUDE_PATH = $(MEN_DOXYGENTMPL)
 @INCLUDE = DoxyfileCommon
 
-#MDIS_COMMIT=b95e1492a10155afa57f2dff246d61ee03034f8e
+#MDIS_COMMIT=5c8bfebe0dc7d7e2232d6bc91590462d8f3d8ad0
 
 PROJECT_NAME           = "Linux UART Driver for 16Z025 FPGA unit"
 INPUT                  = ../ \

@@ -193,55 +193,55 @@
     <member kind="function" static="yes">
       <type>int</type>
       <name>uarts_probe</name>
-      <anchor>a21</anchor>
-      <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
-    </member>
-    <member kind="function" static="yes">
-      <type>int</type>
-      <name>uarts_remove</name>
       <anchor>a22</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
+      <name>uarts_remove</name>
+      <anchor>a23</anchor>
+      <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
+    </member>
+    <member kind="function" static="yes">
+      <type>int</type>
       <name>z25_probe</name>
-      <anchor>a27</anchor>
+      <anchor>a30</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z125_probe</name>
-      <anchor>a28</anchor>
+      <anchor>a31</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z25_remove</name>
-      <anchor>a29</anchor>
+      <anchor>a32</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z125_remove</name>
-      <anchor>a30</anchor>
+      <anchor>a33</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int __init</type>
       <name>z025_setup</name>
-      <anchor>a31</anchor>
+      <anchor>a34</anchor>
       <arglist>(char *str)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int __init</type>
       <name>uarts_serial_init</name>
-      <anchor>a32</anchor>
+      <anchor>a35</anchor>
       <arglist>(void)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>void __exit</type>
       <name>uarts_serial_cleanup</name>
-      <anchor>a33</anchor>
+      <anchor>a36</anchor>
       <arglist>(void)</arglist>
     </member>
     <member kind="variable" static="yes">
