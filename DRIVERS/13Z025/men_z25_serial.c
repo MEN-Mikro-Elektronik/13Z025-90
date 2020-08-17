@@ -212,7 +212,11 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 				DBGOUT(KERN_INFO "men_uart_port.iobase=0x%08x\n", men_uart_port.port.iobase );
 			} else {
 				men_uart_port.port.iotype	= UPIO_MEM;
+			#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,5,0)
+				drvData->uartBase[i] 		= (volatile void*)ioremap((ulong)uart_physbase + i*0x10, 0x10 );
+			#else
 				drvData->uartBase[i] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase + i*0x10, 0x10 );
+			#endif
 				men_uart_port.port.membase	= (char*)drvData->uartBase[i];
 				men_uart_port.port.mapbase	= (volatile unsigned long)(uart_physbase + (i*0x10));
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x .mapbase=0x%08x\n", men_uart_port.port.membase, men_uart_port.port.mapbase );
@@ -314,7 +318,11 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 			   men_uart_port.port.iobase );
 	} else {
 		men_uart_port.port.iotype	= UPIO_MEM;
+	#if LINUX_VERSION_CODE >= KERNEL_VERSION(5,5,0)
+		drvData->uartBase[0] 	= (volatile void*)ioremap((ulong)uart_physbase, 0x10);
+	#else
 		drvData->uartBase[0] 	= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10);
+	#endif
 		men_uart_port.port.membase 	= (char*)drvData->uartBase[0];
 		men_uart_port.port.mapbase 	= (volatile unsigned long)uart_physbase;
 		DBGOUT(KERN_INFO "men_uart_port.port.membase=0x%08x\n",
