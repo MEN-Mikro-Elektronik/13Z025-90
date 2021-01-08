@@ -117,15 +117,19 @@ static char *mode = "";
  * In MEN FPGAs, the Base Clock for UART FPGA Units is the PCI Clock that
  * is fed into the FPGAs Carrier Board like the F206/F210.
  */
+static int nports = MEN_Z25_MAX_SETUP;
 static ulong baud_base = (33333333/32); /* was magic 1041600 in prev. Revision */
+static ulong baud_bases[MEN_Z25_MAX_SETUP];
 static char *fixed_type = "0";
 
 module_param( mode, charp, 0 );
 module_param( baud_base, ulong, 0 );
+module_param_array(baud_bases, ulong, (void*)&nports, 0664 );
 module_param( fixed_type, charp, 0 );
 
 MODULE_PARM_DESC( mode, "phys. mode for each port e.g.: mode=\"se df_fdx df_hdxe\"" );
-MODULE_PARM_DESC( baud_base, "Base for baudrate generation" );
+MODULE_PARM_DESC( baud_base, "Base for baudrate generation. Overriden by baud_bases" );
+MODULE_PARM_DESC( baud_bases, "Base for baudrate generation for each port e.g.: baud_bases=1843200,1843200,1041666,1041666. Overrides baud_base" );
 MODULE_PARM_DESC( fixed_type, "UART port fixed_type=0 (autoscan)/fixed_type=1 (PORT_16550A)" );
 
 /*******************************************************************/
@@ -150,7 +154,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 	uart_physbase = (unsigned char *)chu->phys;
 
 	DBGOUT("z125_probe: physBase=%p irq=%d baud_base=%d\n",
-		   uart_physbase, chu->irq, baud_base );
+		   uart_physbase, chu->irq, baud_bases[G_menZ25Nr] );
 
 	/*--- get storage for intermediate data ---*/
 	drvData = kmalloc( sizeof(MEN_Z25_DRVDATA_T), GFP_KERNEL );
@@ -185,7 +189,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 			int modeval;
 			memset( &men_uart_port, 0, sizeof(men_uart_port));
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
-			men_uart_port.uartclk  			= baud_base * 16 ;
+			men_uart_port.uartclk  			= baud_bases[G_menZ25Nr] * 16 ;
 			men_uart_port.irq 	   		= chu->irq;
 			men_uart_port.flags 	   		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
 			men_uart_port.regshift 			= 0;
@@ -203,7 +207,7 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 			}
 #else /* 8250 API 3.7.x */
 			men_uart_port.port.irq 	   		= chu->irq;
-			men_uart_port.port.uartclk 		= baud_base * 16 ;
+			men_uart_port.port.uartclk 		= baud_bases[G_menZ25Nr] * 16 ;
 			men_uart_port.port.flags		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
 
 			if( ioMapped ) {
@@ -271,7 +275,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	uart_physbase = chu->phys;
 
 	DBGOUT("z125_probe: physBase=%p irq=%d baud_base=%d\n",
-		   uart_physbase, chu->irq, baud_base );
+		   uart_physbase, chu->irq, baud_bases[G_menZ25Nr] );
 
 	/*--- get storage for intermediate data ---*/
 	drvData = kmalloc( sizeof(*drvData), GFP_KERNEL );
@@ -293,7 +297,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 #if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) /* new API */
 	men_uart_port.irq 			= chu->irq;
 	men_uart_port.flags 		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
-	men_uart_port.uartclk 		= baud_base * 16;
+	men_uart_port.uartclk 		= baud_bases[G_menZ25Nr] * 16;
 	men_uart_port.regshift 		= 0;
 
 	/* set address */
@@ -308,7 +312,7 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 	}
 #else /* 8250 API 3.7.x */
 	men_uart_port.port.irq 	   		= chu->irq;
-	men_uart_port.port.uartclk 		= baud_base * 16 ;
+	men_uart_port.port.uartclk 		= baud_bases[G_menZ25Nr] * 16 ;
 	men_uart_port.port.flags		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
 
 	if( ioMapped ) {
@@ -393,7 +397,7 @@ static int uarts_probe( CHAMELEON_UNIT_T *chu )
 
 	case CHAMELEON_16Z057_UART:
 		printk(KERN_INFO "Probing Z57 unit - override baud_base with 115200!\n");
-		baud_base	=	115200;
+		baud_bases[G_menZ25Nr]	=	115200;
 		retval 		= 	z25_probe(chu);
 		break;
 
@@ -486,12 +490,19 @@ static int __init z025_setup( char *str )
 {
 	char buf[MODE_MAX_LEN];
 	char *s,*t;
-	int i = 0;
+	int i;
+
+	for (i = 0; i < MEN_Z25_MAX_SETUP; i++ ) {
+		if ( baud_bases[i] == 0 ) {
+			baud_bases[i] = baud_base;
+		}
+	}
 
 	memset( buf, 0x0, sizeof(buf));
 	strncpy( buf, str, MODE_MAX_LEN-1 );
 	buf[MODE_MAX_LEN-1] = '\0';
 	s = buf;
+	i = 0;
 	DBGOUT("men_13z025_setup: mode='%s'\n", s );
 
 	if( *s=='\0' )
