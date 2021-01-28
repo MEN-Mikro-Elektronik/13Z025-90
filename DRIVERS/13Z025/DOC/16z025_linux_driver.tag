@@ -193,55 +193,55 @@
     <member kind="function" static="yes">
       <type>int</type>
       <name>uarts_probe</name>
-      <anchor>a22</anchor>
+      <anchor>a24</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>uarts_remove</name>
-      <anchor>a23</anchor>
+      <anchor>a25</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z25_probe</name>
-      <anchor>a30</anchor>
+      <anchor>a34</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z125_probe</name>
-      <anchor>a31</anchor>
+      <anchor>a35</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z25_remove</name>
-      <anchor>a32</anchor>
+      <anchor>a36</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int</type>
       <name>z125_remove</name>
-      <anchor>a33</anchor>
+      <anchor>a37</anchor>
       <arglist>(CHAMELEON_UNIT_T *chu)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int __init</type>
       <name>z025_setup</name>
-      <anchor>a34</anchor>
+      <anchor>a38</anchor>
       <arglist>(char *str)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>int __init</type>
       <name>uarts_serial_init</name>
-      <anchor>a35</anchor>
+      <anchor>a39</anchor>
       <arglist>(void)</arglist>
     </member>
     <member kind="function" static="yes">
       <type>void __exit</type>
       <name>uarts_serial_cleanup</name>
-      <anchor>a36</anchor>
+      <anchor>a40</anchor>
       <arglist>(void)</arglist>
     </member>
     <member kind="variable" static="yes">

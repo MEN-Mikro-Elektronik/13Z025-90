@@ -371,11 +371,11 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html"><param name="Name" value="men_z25_serial.c"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a22"><param name="Name" value="uarts_probe"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a31"><param name="Name" value="z125_probe"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a33"><param name="Name" value="z125_remove"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a30"><param name="Name" value="z25_probe"></OBJECT>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a32"><param name="Name" value="z25_remove"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a24"><param name="Name" value="uarts_probe"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a35"><param name="Name" value="z125_probe"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a37"><param name="Name" value="z125_remove"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a34"><param name="Name" value="z25_probe"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a36"><param name="Name" value="z25_remove"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="minRevision"><param name="Name" value="minRevision"></OBJECT>
   <UL>
@@ -446,7 +446,7 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="uarts_probe"><param name="Name" value="uarts_probe"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a22"><param name="Name" value="men_z25_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a24"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="UnitIdent"><param name="Name" value="UnitIdent"></OBJECT>
   <UL>
@@ -465,17 +465,17 @@
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z125_probe"><param name="Name" value="z125_probe"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a31"><param name="Name" value="men_z25_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a35"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z125_remove"><param name="Name" value="z125_remove"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a33"><param name="Name" value="men_z25_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a37"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z25_probe"><param name="Name" value="z25_probe"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a30"><param name="Name" value="men_z25_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a34"><param name="Name" value="men_z25_serial.c"></OBJECT>
   </UL>
   <LI><OBJECT type="text/sitemap"><param name="See Also" value="z25_remove"><param name="Name" value="z25_remove"></OBJECT>
   <UL>
-    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a32"><param name="Name" value="men_z25_serial.c"></OBJECT>
+    <LI><OBJECT type="text/sitemap"><param name="Local" value="men__z25__serial_8c.html#a36"><param name="Name" value="men_z25_serial.c"></OBJECT>
 </UL>
