@@ -30,7 +30,6 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/ioport.h>
-#include <linux/ide.h>
 #include <linux/init.h>
 #include <linux/serial.h>
 #include <linux/version.h>
@@ -68,17 +67,10 @@
 /*
  * UART port structs / registering functions depending on kernel Version
  */
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
-# define UART_8250_PORT_STRUCT 		uart_port
-# define UART_8250_REGISTER_FUNC	serial8250_register_port
-# define UART_8250_UNREGISTER_FUNC	serial8250_unregister_port
-# define UART_8250_IOMEMBASE  		men_uart_port.membase
-#else
 # define UART_8250_PORT_STRUCT 		uart_8250_port
 # define UART_8250_REGISTER_FUNC	serial8250_register_8250_port
 # define UART_8250_UNREGISTER_FUNC 	serial8250_unregister_port
 # define UART_8250_IOMEMBASE  		men_uart_port.port.membase
-#endif
 
 static int G_menZ25Nr;			/**< current number of MEN_Z25 uarts found */
 static int G_menZ25_mode[MEN_Z25_MAX_SETUP];
@@ -188,24 +180,6 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 		if( exist_mask & b ) {
 			int modeval;
 			memset( &men_uart_port, 0, sizeof(men_uart_port));
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0)
-			men_uart_port.uartclk  			= baud_bases[G_menZ25Nr] * 16 ;
-			men_uart_port.irq 	   		= chu->irq;
-			men_uart_port.flags 	   		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
-			men_uart_port.regshift 			= 0;
-
-			if( ioMapped ) {
-				men_uart_port.iotype		= UPIO_PORT;
-				men_uart_port.iobase		= (volatile unsigned long)(uart_physbase+i*0x10);
-				DBGOUT(KERN_INFO "men_uart_port.iobase=0x%08x\n", men_uart_port.iobase );
-			} else {
-				men_uart_port.iotype 		= UPIO_MEM;
-				drvData->uartBase[i]    	= (volatile void*)ioremap_nocache((ulong)uart_physbase + i*0x10, 0x10 );
-				men_uart_port.membase 		= (unsigned char*)drvData->uartBase[i];
-				men_uart_port.mapbase 		= (volatile resource_size_t)(volatile uintptr_t)(uart_physbase + i*0x10);
-				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x\n", men_uart_port.membase );
-			}
-#else /* 8250 API 3.7.x */
 			men_uart_port.port.irq 	   		= chu->irq;
 			men_uart_port.port.uartclk 		= baud_bases[G_menZ25Nr] * 16 ;
 			men_uart_port.port.flags		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
@@ -225,7 +199,6 @@ static int z25_probe( CHAMELEON_UNIT_T *chu )
 				men_uart_port.port.mapbase	= (volatile unsigned long)(uart_physbase + (i*0x10));
 				DBGOUT(KERN_INFO "men_uart_port.membase=0x%08x .mapbase=0x%08x\n", men_uart_port.port.membase, men_uart_port.port.mapbase );
 			}
-#endif
 			/* set differential mode and half duplex mode according to kernel parameter. Default: RS232 (single ended) */
 			if(( G_menZ25Nr >= MEN_Z25_MAX_SETUP ) || ( !G_menZ25_mode[G_menZ25Nr] ))
 				modeval = Z25_MODE_SE;
@@ -294,23 +267,6 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 
 	memset( &men_uart_port, 0, sizeof(men_uart_port));
 
-#if LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0) /* new API */
-	men_uart_port.irq 			= chu->irq;
-	men_uart_port.flags 		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
-	men_uart_port.uartclk 		= baud_bases[G_menZ25Nr] * 16;
-	men_uart_port.regshift 		= 0;
-
-	/* set address */
-	if( ioMapped ) {
-		men_uart_port.iotype		= UPIO_PORT;
-		men_uart_port.iobase		= (volatile unsigned long)uart_physbase;
-	} else {
-		men_uart_port.iotype 		= UPIO_MEM;
-		drvData->uartBase[0] 		= (volatile void*)ioremap_nocache((ulong)uart_physbase, 0x10 );
-		men_uart_port.mapbase 		= (volatile resource_size_t)(volatile uintptr_t)uart_physbase;
-		men_uart_port.membase 		= (unsigned char*)drvData->uartBase[0];
-	}
-#else /* 8250 API 3.7.x */
 	men_uart_port.port.irq 	   		= chu->irq;
 	men_uart_port.port.uartclk 		= baud_bases[G_menZ25Nr] * 16 ;
 	men_uart_port.port.flags		= UPF_SKIP_TEST|UPF_SHARE_IRQ|UPF_BOOT_AUTOCONF;
@@ -332,7 +288,6 @@ static int z125_probe( CHAMELEON_UNIT_T *chu )
 		DBGOUT(KERN_INFO "men_uart_port.port.membase=0x%08x\n",
 			   men_uart_port.port.membase );
 	}
-#endif
 
 	/*
 	 * set differential mode and half duplex mode according to kernel parameter. Default:
