@@ -30,7 +30,6 @@
 #include <linux/kernel.h>
 #include <linux/module.h>
 #include <linux/ioport.h>
-#include <linux/ide.h>
 #include <linux/init.h>
 #include <linux/serial.h>
 #include <linux/version.h>
